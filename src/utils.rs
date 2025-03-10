@@ -13,17 +13,17 @@ fn is_vowel(token: &str) -> bool {
     vowels.contains(&token)
 }
 
-fn graduate(vowel: &str, level: i32) -> &str {
+fn graduate(vowel: &str, level: i32) -> String {
     let graduation_map: HashMap<&str, Vec<&str>> = HashMap::from([
-        ("ृ", vec!["र्", "ार्‌"]),
-        ("ॢ", vec!["ल्‌", "ाल्‌"]),
+        ("ृ", vec!["र्", "ार्"]),
+        ("ॢ", vec!["ल्", "ाल्"]),
         ("ि", vec!["े", "ै"]),
         ("ी", vec!["े", "ै"]),
         ("ु", vec!["ो", "ौ"]),
         ("ू", vec!["ो", "ौ"]),
         ("ा", vec!["ा", "ा"]),
-        ("ऋ", vec!["र्‌", "आर्‌"]),
-        ("ऌ", vec!["ल्‌", "आल्‌"]),
+        ("ऋ", vec!["र्", "आर्"]),
+        ("ऌ", vec!["ल्", "आल्"]),
         ("इ", vec!["ए", "ऐ"]),
         ("ई", vec!["ए", "ऐ"]),
         ("उ", vec!["ओ", "औ"]),
@@ -32,9 +32,9 @@ fn graduate(vowel: &str, level: i32) -> &str {
         ("आ", vec!["आ", "आ"])
     ]);
     if graduation_map.contains_key(vowel) {
-        graduation_map[vowel][level as usize]
+        graduation_map[vowel][level as usize].to_string()
     } else {
-        "ा"
+        vowel.to_string()
     }
 }
 
@@ -54,7 +54,7 @@ pub fn vowel_graduation(string: String, level: GraduationLevel) -> String {
                         GraduationLevel::GUNA => 0,
                         GraduationLevel::VRDDHI => 1
                     }
-                )
+                ).as_str()
             );
             graduated = true;
         } else {
@@ -63,9 +63,8 @@ pub fn vowel_graduation(string: String, level: GraduationLevel) -> String {
     }
 
     if !graduated {
-        let mut intr = result.split("").into_iter().collect::<Vec<&str>>();
-        println!("{:?}", intr);
-        let mut t = graduate(intr[0], 0).to_string();
+        let mut intr = result.chars().map(|c| String::from(c)).collect::<Vec<String>>();
+        let mut t = graduate(intr[0].as_str(), 0).to_string();
         intr.remove(0);
         t.push_str(&intr.join(""));
         t
